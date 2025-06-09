@@ -3,7 +3,6 @@ package gcounter
 import cats.instances.list.*
 import cats.syntax.foldable.*
 import cats.syntax.semigroup.*
-import cats.instances.int.*
 import cats.kernel.CommutativeMonoid
 
 trait GCounterT[F[_, _], K, V] {
@@ -48,13 +47,4 @@ object GCounterT {
 
       def total(f: F[K, V])(implicit m: CommutativeMonoid[V]): V = f.values.combineAll
     }
-
-  def main(args: Array[String]): Unit = {
-    val g1 = Map("a" -> 7, "b" -> 3)
-    val g2 = Map("a" -> 2, "b" -> 5)
-    val counter = GCounterT[Map, String, Int]
-    val merge = counter.merge(g1, g2)
-    println(merge)
-    println(counter.total(merge))
-  }
 }
